@@ -1,4 +1,4 @@
-# RVC Text-to-Speech WebUI
+# RVC Text-to-Speech 
 
 This is a text-to-speech Gradio webui for [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) models, using [edge-tts](https://github.com/rany2/edge-tts).
 
