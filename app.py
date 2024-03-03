@@ -233,7 +233,7 @@ This is a text-to-speech webui of RVC models.
 Input text ➡[(edge-tts)](https://github.com/rany2/edge-tts)➡ Speech mp3 file ➡[(RVC)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)➡ Final output
 """
 
-app = gr.Blocks()
+app = gr.Blocks(theme"Hev832/EasyAndCool", title="RVC-TTS)
 with app:
     gr.Markdown(initial_md)
     with gr.Row():
@@ -245,8 +245,8 @@ with app:
             )
         with gr.Column():
             f0_method = gr.Radio(
-                label="Pitch extraction method (pm: very fast, low quality, rmvpe: a little slow, high quality)",
-                choices=["pm", "rmvpe"],  # harvest and crepe is too slow
+                label="Pitch extraction method (Rmvpe is default)",
+                choices=["rmvpe"],  # harvest and crepe is too slow
                 value="rmvpe",
                 interactive=True,
             )
@@ -362,4 +362,4 @@ with app:
         )
 
 
-app.launch(inbrowser=True)
+app.launch(share=True)
