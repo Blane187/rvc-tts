@@ -2,19 +2,15 @@
 
 This is a text-to-speech Gradio webui for [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) models, using [edge-tts](https://github.com/rany2/edge-tts).
 
-[🤗 Online Demo](https://huggingface.co/spaces/litagin/rvc_okiba_TTS)
 
-This can run on CPU without GPU (but slow).
-
-![Screenshot](assets/screenshot.jpg)
 
 ## Install
 
 Requirements: Tested for Python 3.10 on Windows 11. Python 3.11 is probably not supported, so please use Python 3.10.
 
 ```bash
-git clone https://github.com/litagin02/rvc-tts-webui.git
-cd rvc-tts-webui
+git clone https://github.com/Blane187/rvc-tts.git
+cd rvc-tts
 
 # Download models in root directory
 curl -L -O https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt
