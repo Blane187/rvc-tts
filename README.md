@@ -1,13 +1,29 @@
 # RVC Text-to-Speech 
 
+segment :
+
+[colab](#colab-notebook)
+
+[installation](#Install) 
+
+[locate](#Locate-RVC-models) 
+
+[launch](#Launch) 
+
+[update](#update) 
+
+[Troubleshooting](Troubleshooting) 
+
 This is a text-to-speech Gradio webui for [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) models, using [edge-tts](https://github.com/rany2/edge-tts).
 
-[![open in clab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Blane187/rvc-tts/blob/main/rvc_tts.ipynb)]
+
+# colab-notebook
+
+[![open in clab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Blane187/rvc-tts/blob/main/rvc_tts.ipynb)
 
 
 
-
-## Install
+# Install
 
 Requirements: Tested for Python 3.10 on Windows 11. Python 3.11 is probably not supported, so please use Python 3.10.
 
@@ -24,6 +40,7 @@ python -m venv venv
 # Activate venv (for Windows)
 venv\Scripts\activate
 
+
 # Install PyTorch manually if you want to use NVIDIA GPU (Windows)
 # See https://pytorch.org/get-started/locally/ for more details
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
@@ -32,7 +49,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
-## Locate RVC models
+# Locate-RVC-models
 
 Place your RVC models in `weights/` directory as follows:
 
