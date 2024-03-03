@@ -2,7 +2,7 @@
 
 This is a text-to-speech Gradio webui for [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) models, using [edge-tts](https://github.com/rany2/edge-tts).
 
-
+"<a href=\"https://colab.research.google.com/github/Blane187/rvc-tts/blob/main/rvc_tts.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
 
 ## Install
 
