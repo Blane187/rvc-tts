@@ -246,7 +246,7 @@ with app:
         with gr.Column():
             f0_method = gr.Radio(
                 label="Pitch extraction method (Rmvpe is default)",
-                choices=["rmvpe"],  # harvest and crepe is too slow
+                choices=["rmvpe", "dio", "crepe", " rmvpe+"],  # harvest and crepe is too slow
                 value="rmvpe",
                 interactive=True,
             )
@@ -310,52 +310,6 @@ with app:
                 [
                     "This is an English text to speech conversation demo.",
                     "en-US-AriaNeural-Female",
-                ],
-                ["这是一个中文文本到语音的转换演示。", "zh-CN-XiaoxiaoNeural-Female"],
-                ["한국어 텍스트에서 음성으로 변환하는 데모입니다.", "ko-KR-SunHiNeural-Female"],
-                [
-                    "Il s'agit d'une démo de conversion du texte français à la parole.",
-                    "fr-FR-DeniseNeural-Female",
-                ],
-                [
-                    "Dies ist eine Demo zur Umwandlung von Deutsch in Sprache.",
-                    "de-DE-AmalaNeural-Female",
-                ],
-                [
-                    "Tämä on suomenkielinen tekstistä puheeksi -esittely.",
-                    "fi-FI-NooraNeural-Female",
-                ],
-                [
-                    "Это демонстрационный пример преобразования русского текста в речь.",
-                    "ru-RU-SvetlanaNeural-Female",
-                ],
-                [
-                    "Αυτή είναι μια επίδειξη μετατροπής ελληνικού κειμένου σε ομιλία.",
-                    "el-GR-AthinaNeural-Female",
-                ],
-                [
-                    "Esta es una demostración de conversión de texto a voz en español.",
-                    "es-ES-ElviraNeural-Female",
-                ],
-                [
-                    "Questa è una dimostrazione di sintesi vocale in italiano.",
-                    "it-IT-ElsaNeural-Female",
-                ],
-                [
-                    "Esta é uma demonstração de conversão de texto em fala em português.",
-                    "pt-PT-RaquelNeural-Female",
-                ],
-                [
-                    "Це демонстрація тексту до мовлення українською мовою.",
-                    "uk-UA-PolinaNeural-Female",
-                ],
-                [
-                    "هذا عرض توضيحي عربي لتحويل النص إلى كلام.",
-                    "ar-EG-SalmaNeural-Female",
-                ],
-                [
-                    "இது தமிழ் உரையிலிருந்து பேச்சு மாற்ற டெமோ.",
-                    "ta-IN-PallaviNeural-Female",
                 ],
             ],
             inputs=[tts_text, tts_voice],
