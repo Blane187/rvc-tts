@@ -31,6 +31,10 @@ segment :
 [![open in clab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Blane187/rvc-tts/blob/main/rvc_tts.ipynb)
 
 
+--------------------------------------------
+
+
+
 
 # Install
 
@@ -58,6 +62,12 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
+
+--------------------------------------------
+
+
+
+
 # Locate-RVC-models
 
 Place your RVC models in `weights/` directory as follows:
@@ -77,6 +87,13 @@ Each model directory should contain exactly one `.pth` file and at most one `.in
 
 It seems that non-ASCII characters in path names gave faiss errors (like `weights/モデル1/index.index`), so please avoid them.
 
+
+--------------------------------------------
+
+
+
+
+
 ## Launch
 
 ```bash
@@ -85,6 +102,10 @@ venv\Scripts\activate
 
 python app.py
 ```
+--------------------------------------------
+
+
+
 
 ## Update
 
@@ -93,6 +114,11 @@ git pull
 venv\Scripts\activate
 pip install -r requirements.txt --upgrade
 ```
+
+--------------------------------------------
+
+
+
 
 ## Troubleshooting
 
