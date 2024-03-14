@@ -122,11 +122,7 @@ class VC(object):
                 batch_size=batch_size,
                 device=self.device,
                 return_periodicity=True,
-            )
-        elif method == "linz-crepe":
-                f0 = self.get_f0_crepe_computation(
-                    x, f0_min, f0_max, p_len, crepe_hop_length
-            )
+            ) 
             pd = torchcrepe.filter.median(pd, 3)
             f0 = torchcrepe.filter.mean(f0, 3)
             f0[pd < 0.1] = 0
