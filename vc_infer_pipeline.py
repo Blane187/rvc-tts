@@ -123,7 +123,7 @@ class VC(object):
                 device=self.device,
                 return_periodicity=True,
             )
-            elif method == "Blinz-crepe":
+        elif method == "linz-crepe":
                 f0 = self.get_f0_crepe_computation(
                     x, f0_min, f0_max, p_len, crepe_hop_length
             )
