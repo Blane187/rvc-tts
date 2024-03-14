@@ -246,7 +246,7 @@ with app:
         with gr.Column():
             f0_method = gr.Radio(
                 label="Pitch extraction method (Rmvpe is default)",
-                choices=["rmvpe", "crepe", "linz-crepe"],  # harvest is too slow
+                choices=["rmvpe", "crepe"],  # harvest is too slow
                 value="rmvpe",
                 interactive=True,
             )
