@@ -113,13 +113,13 @@ def load_hubert():
     return hubert_model.eval()
 
 
-print("Loading hubert model...")
+print("Đang tải mẫu hubert...")
 hubert_model = load_hubert()
-print("Hubert model loaded.")
+print("Mẫu Hubert đã được nạp.")
 
-print("Loading rmvpe model...")
+print("Đang tải mẫu rmvpe...")
 rmvpe_model = RMVPE("rmvpe.pt", config.is_half, config.device)
-print("rmvpe model loaded.")
+print("Mẫu rmvpe đã được nạp.")
 
 
 def tts(
@@ -143,10 +143,10 @@ def tts(
     print(f"Model name: {model_name}")
     print(f"F0: {f0_method}, Key: {f0_up_key}, Index: {index_rate}, Protect: {protect}")
     try:
-        if limitation and len(tts_text) > 280:
-            print("Error: Text too long")
+        if limitation and len(tts_text) > 80000:
+            print("Lỗi: Text quá dài")
             return (
-                f"Text characters should be at most 280 in this huggingface space, but got {len(tts_text)} characters.",
+                f"Text characters should be at most 80000 in this huggingface space, but got {len(tts_text)} characters.",
                 None,
                 None,
             )
@@ -213,9 +213,9 @@ def tts(
         )
     except EOFError:
         info = (
-            "It seems that the edge-tts output is not valid. "
-            "This may occur when the input text and the speaker do not match. "
-            "For example, maybe you entered Japanese (without alphabets) text but chose non-Japanese speaker?"
+            "Có vẻ như edge-tts không ra kết quả"
+            "Nó có thể là do khi văn bản và giọng nói không khớp nhau. "
+            "Ví dụ, có thể bạn nhập Tiếng Việt nhưng lại chọn không phải giọng đọc tiếng Việt?"
         )
         print(info)
         return info, None, None
@@ -226,27 +226,26 @@ def tts(
 
 
 initial_md = """
-# RVC text-to-speech webui
+# RVC chuyển văn bản sang giọng đọc
 
-This is a text-to-speech webui of RVC models.
 
-Input text ➡[(edge-tts)](https://github.com/rany2/edge-tts)➡ Speech mp3 file ➡[(RVC)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)➡ Final output
+Nhập văn bản ➡[(edge-tts)](https://github.com/rany2/edge-tts)➡ Tệp âm thanh ➡[(RVC)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)➡ Kết quả
 """
 
-app = gr.Blocks(theme="Hev832/soft", title="RVC-TTS")
+app = gr.Blocks()
 with app:
     gr.Markdown(initial_md)
     with gr.Row():
         with gr.Column():
             model_name = gr.Dropdown(label="Model", choices=models, value=models[0])
             f0_key_up = gr.Number(
-                label="Transpose (the best value depends on the models and speakers)",
+                label="Chuyển đổi (giá trị tốt nhất phụ thuộc vào models và speaker)",
                 value=0,
             )
         with gr.Column():
             f0_method = gr.Radio(
-                label="Pitch extraction method (Rmvpe is default)",
-                choices=["rmvpe", "crepe"],  # harvest is too slow
+                label="Chọn thuật toán giải (pm: rất nhanh, chất lượng thấp, rmvpe: Hơi chậm, chất lượng cao)",
+                choices=["pm", "rmvpe"],  # harvest and crepe is too slow
                 value="rmvpe",
                 interactive=True,
             )
@@ -261,33 +260,33 @@ with app:
                 minimum=0,
                 maximum=0.5,
                 label="Protect",
-                value=0.33,
+                value=0,
                 step=0.01,
                 interactive=True,
             )
     with gr.Row():
         with gr.Column():
             tts_voice = gr.Dropdown(
-                label="Edge-tts speaker (format: language-Country-Name-Gender)",
+                label="Chọn giọng đọc (Cấu trúc: ngôn ngữ-Quốc gia-Tên-Giới tính)",
                 choices=tts_voices,
-                allow_custom_value=False,
-                value="ja-JP-NanamiNeural-Female",
+                allow_custom_value=True,
+                value="en-AU-WilliamNeural-Male",
             )
             speed = gr.Slider(
                 minimum=-100,
                 maximum=100,
-                label="Speech speed (%)",
+                label="Tốc độ đọc (%)",
                 value=0,
-                step=10,
+                step=5,
                 interactive=True,
             )
-            tts_text = gr.Textbox(label="Input Text", value="これは日本語テキストから音声への変換デモです。")
+            tts_text = gr.Textbox(label="Nhập văn bản", value="Xin chào đây là thử nghiệm chữ thành tiếng nói")
         with gr.Column():
-            but0 = gr.Button("Convert", variant="primary")
-            info_text = gr.Textbox(label="Output info")
+            but0 = gr.Button("Chuyển đổi", variant="primary")
+            info_text = gr.Textbox(label="Thông số đầu ra")
         with gr.Column():
             edge_tts_output = gr.Audio(label="Edge Voice", type="filepath")
-            tts_output = gr.Audio(label="Result")
+            tts_output = gr.Audio(label="Kết quả")
         but0.click(
             tts,
             [
@@ -311,9 +310,55 @@ with app:
                     "This is an English text to speech conversation demo.",
                     "en-US-AriaNeural-Female",
                 ],
+                ["这是一个中文文本到语音的转换演示。", "zh-CN-XiaoxiaoNeural-Female"],
+                ["한국어 텍스트에서 음성으로 변환하는 데모입니다.", "ko-KR-SunHiNeural-Female"],
+                [
+                    "Il s'agit d'une démo de conversion du texte français à la parole.",
+                    "fr-FR-DeniseNeural-Female",
+                ],
+                [
+                    "Dies ist eine Demo zur Umwandlung von Deutsch in Sprache.",
+                    "de-DE-AmalaNeural-Female",
+                ],
+                [
+                    "Tämä on suomenkielinen tekstistä puheeksi -esittely.",
+                    "fi-FI-NooraNeural-Female",
+                ],
+                [
+                    "Это демонстрационный пример преобразования русского текста в речь.",
+                    "ru-RU-SvetlanaNeural-Female",
+                ],
+                [
+                    "Αυτή είναι μια επίδειξη μετατροπής ελληνικού κειμένου σε ομιλία.",
+                    "el-GR-AthinaNeural-Female",
+                ],
+                [
+                    "Esta es una demostración de conversión de texto a voz en español.",
+                    "es-ES-ElviraNeural-Female",
+                ],
+                [
+                    "Questa è una dimostrazione di sintesi vocale in italiano.",
+                    "it-IT-ElsaNeural-Female",
+                ],
+                [
+                    "Esta é uma demonstração de conversão de texto em fala em português.",
+                    "pt-PT-RaquelNeural-Female",
+                ],
+                [
+                    "Це демонстрація тексту до мовлення українською мовою.",
+                    "uk-UA-PolinaNeural-Female",
+                ],
+                [
+                    "هذا عرض توضيحي عربي لتحويل النص إلى كلام.",
+                    "ar-EG-SalmaNeural-Female",
+                ],
+                [
+                    "இது தமிழ் உரையிலிருந்து பேச்சு மாற்ற டெமோ.",
+                    "ta-IN-PallaviNeural-Female",
+                ],
             ],
             inputs=[tts_text, tts_voice],
         )
 
 
-app.launch(share=True)
+app.launch(Share=True)
