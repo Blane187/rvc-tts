@@ -233,7 +233,7 @@ This is a text-to-speech webui of RVC models.
 Input text ➡[(edge-tts)](https://github.com/rany2/edge-tts)➡ Speech mp3 file ➡[(RVC)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)➡ Final output
 """
 
-app = gr.Blocks(theme="Hev832/soft", title="RVC-TTS")
+app = gr.Blocks(theme="Hev832/emerald", title="RVC-TTS")
 with app:
     gr.Markdown(initial_md)
     with gr.Row():
