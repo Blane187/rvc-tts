@@ -36,9 +36,11 @@ DEFAULT_PROTECT = 0.33
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="RVC Text-to-Speech CLI")
+parser.add_argument("--model_name", help="Name of the model to use")
 parser.add_argument("--tts_text", help="Input text for text-to-speech conversion")
-parser.add_argument("--model_name", default="your_default_model_name", help="Name of the model to use")
 # Add other arguments here...
+
+args = parser.parse_args()
 
 def tts_cli(args):
     config = Config()
