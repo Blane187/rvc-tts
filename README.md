@@ -6,24 +6,6 @@ This is a text-to-speech Gradio webui for [RVC](https://github.com/RVC-Project/R
 --------------------------------------------
 
 
-# Content Table :
-
-[colab](#colab-notebook)
-
-[installation](#Install) 
-
-[locate](#Locate-RVC-models) 
-
-[launch](#Launch) 
-
-[update](#update) 
-
-[Troubleshooting](Troubleshooting) 
-
-
---------------------------------------------
-
-
 
 
 # colab-notebook
@@ -118,7 +100,12 @@ pip install -r requirements.txt --upgrade
 --------------------------------------------
 
 
+## how to use cli
 
+```
+!python Command-Line-Interface.py --model_name your_model_name --tts_text "Your input text here"
+
+```
 
 ## Troubleshooting
 
