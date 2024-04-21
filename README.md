@@ -100,12 +100,7 @@ pip install -r requirements.txt --upgrade
 --------------------------------------------
 
 
-## how to use cli
 
-```
-python Command-Line-Interface.py --model_name your_model_name --tts_text "Your input text here"
-
-```
 
 ## Troubleshooting
 
