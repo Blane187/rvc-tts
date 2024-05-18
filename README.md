@@ -141,9 +141,9 @@ To use the CLI, run the `tts-cli.py` script with the appropriate arguments.
 
 ```sh
 python tts-cli.py --model_name model_name_1 --speed 0 --tts_text "これは日本語テキストから音声への変換デモです。" --tts_voice "ja-JP-NanamiNeural-Female" --f0_up_key 0 --f0_method rmvpe --index_rate 1 --protect 0.33 --filter_radius 3 --resample_sr 0 --rms_mix_rate 0.25
+```
 
 ---
-
 
 # Contributors
 
