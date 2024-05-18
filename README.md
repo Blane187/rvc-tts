@@ -116,3 +116,29 @@ ERROR: Could not build wheels for fairseq, which is required to install pyprojec
 
 Maybe fairseq needs Microsoft C++ Build Tools.
 [Download installer](https://visualstudio.microsoft.com/ja/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16) and install it.
+
+
+
+## Usage with cli!
+
+To use the CLI, run the `tts-cli.py` script with the appropriate arguments.
+
+### Command-Line Arguments
+
+- `--model_name`: The name of the model to use (required, must be one of the models in the `weights` directory).
+- `--speed`: Speech speed in percentage (default: 0).
+- `--tts_text`: Input text for TTS (required).
+- `--tts_voice`: Edge-tts speaker (required, must be one of the available voices).
+- `--f0_up_key`: Transpose key (default: 0).
+- `--f0_method`: Pitch extraction method, either "rmvpe" or "crepe" (default: "rmvpe").
+- `--index_rate`: Index rate (default: 1.0).
+- `--protect`: Protect value (default: 0.33).
+- `--filter_radius`: Filter radius (default: 3).
+- `--resample_sr`: Resample sample rate (default: 0).
+- `--rms_mix_rate`: RMS mix rate (default: 0.25).
+
+### Example Usage
+
+```sh
+python tts-cli.py --model_name model_name_1 --speed 0 --tts_text "これは日本語テキストから音声への変換デモです。" --tts_voice "ja-JP-NanamiNeural-Female" --f0_up_key 0 --f0_method rmvpe --index_rate 1 --protect 0.33 --filter_radius 3 --resample_sr 0 --rms_mix_rate 0.25
+
