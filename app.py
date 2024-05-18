@@ -143,10 +143,10 @@ def tts(
     print(f"Model name: {model_name}")
     print(f"F0: {f0_method}, Key: {f0_up_key}, Index: {index_rate}, Protect: {protect}")
     try:
-        if limitation and len(tts_text) > 280:
+        if limitation and len(tts_text) > 80000:
             print("Error: Text too long")
             return (
-                f"Text characters should be at most 280 in this huggingface space, but got {len(tts_text)} characters.",
+                f"Text characters should be at most 80000 in this colab, but got {len(tts_text)} characters.",
                 None,
                 None,
             )
@@ -166,10 +166,10 @@ def tts(
         audio, sr = librosa.load(edge_output_filename, sr=16000, mono=True)
         duration = len(audio) / sr
         print(f"Audio duration: {duration}s")
-        if limitation and duration >= 20:
+        if limitation and duration >= 2000000:
             print("Error: Audio too long")
             return (
-                f"Audio should be less than 20 seconds in this huggingface space, but got {duration}s.",
+                f"Audio should be less than 2000000 seconds in this colab, but got {duration}s.",
                 edge_output_filename,
                 None,
             )
