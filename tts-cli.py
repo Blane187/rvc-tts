@@ -251,7 +251,7 @@ if __name__ == "__main__":
         sr, audio = result
         sf.write("output.wav", audio, sr)
         print(f"Result saved to output.wav")
- import asyncio
+import asyncio
 import datetime
 import logging
 import os
