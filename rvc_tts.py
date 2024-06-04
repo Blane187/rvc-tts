@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import datetime
 import logging
 import os
@@ -8,7 +9,6 @@ import traceback
 import edge_tts
 import librosa
 import torch
-import soundfile as sf
 from fairseq import checkpoint_utils
 
 from config import Config
@@ -21,28 +21,28 @@ from lib.infer_pack.models import (
 from rmvpe import RMVPE
 from vc_infer_pipeline import VC
 
-# Set up logging
 logging.getLogger("fairseq").setLevel(logging.WARNING)
 logging.getLogger("numba").setLevel(logging.WARNING)
 logging.getLogger("markdown_it").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
-# Initialize configuration
-config = Config()
 limitation = os.getenv("SYSTEM") == "spaces"
 
-# Load TTS voices
+config = Config()
+
 edge_output_filename = "edge_output.mp3"
 tts_voice_list = asyncio.get_event_loop().run_until_complete(edge_tts.list_voices())
 tts_voices = [f"{v['ShortName']}-{v['Gender']}" for v in tts_voice_list]
 
-# Load available models
 model_root = "weights"
-models = [d for d in os.listdir(model_root) if os.path.isdir(os.path.join(model_root, d))]
+models = [
+    d for d in os.listdir(model_root) if os.path.isdir(os.path.join(model_root, d))
+]
 if len(models) == 0:
     raise ValueError("No model found in `weights` folder")
 models.sort()
+
 
 def model_data(model_name):
     pth_files = [
@@ -95,7 +95,9 @@ def model_data(model_name):
 
     return tgt_sr, net_g, vc, version, index_file, if_f0
 
+
 def load_hubert():
+    global hubert_model
     models, _, _ = checkpoint_utils.load_model_ensemble_and_task(
         ["hubert_base.pt"],
         suffix="",
@@ -108,6 +110,7 @@ def load_hubert():
         hubert_model = hubert_model.float()
     return hubert_model.eval()
 
+
 print("Loading hubert model...")
 hubert_model = load_hubert()
 print("Hubert model loaded.")
@@ -115,6 +118,7 @@ print("Hubert model loaded.")
 print("Loading rmvpe model...")
 rmvpe_model = RMVPE("rmvpe.pt", config.is_half, config.device)
 print("rmvpe model loaded.")
+
 
 def tts(
     model_name,
@@ -133,7 +137,7 @@ def tts(
     print(datetime.datetime.now())
     print("tts_text:")
     print(tts_text)
-    print(f"tts-voice: {tts_voice}")
+    print(f"tts_voice: {tts_voice}")
     print(f"Model name: {model_name}")
     print(f"F0: {f0_method}, Key: {f0_up_key}, Index: {index_rate}, Protect: {protect}")
     try:
@@ -217,38 +221,41 @@ def tts(
         print(info)
         return info, None, None
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="RVC Text-to-Speech CLI")
-    parser.add_argument("--model-name", type=str, required=True, choices=models, help="Model name")
-    parser.add_argument("--speed", type=int, default=0, help="Speech speed (%)")
-    parser.add_argument("--tts-text", type=str, required=True, help="Input text for TTS")
-    parser.add_argument("--tts-voice", type=str, required=True, choices=tts_voices, help="Edge-tts speaker")
-    parser.add_argument("--f0-up-key", type=int, default=0, help="Transpose key")
-    parser.add_argument("--f0-method", type=str, default="rmvpe", choices=["rmvpe", "crepe"], help="Pitch extraction method")
-    parser.add_argument("--index-rate", type=float, default=1.0, help="Index rate")
-    parser.add_argument("--protect", type=float, default=0.33, help="Protect")
-    parser.add_argument("--filter-radius", type=int, default=3, help="Filter radius")
-    parser.add_argument("--resample-sr", type=int, default=0, help="Resample sample rate")
-    parser.add_argument("--rms-mix-rate", type=float, default=0.25, help="RMS mix rate")
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="RVC text-to-speech")
+    parser.add_argument("model_name", type=str, choices=models, help="Model name")
+    parser.add_argument("tts_text", type=str, help="Input text for TTS")
+    parser.add_argument("tts_voice", type=str, choices=tts_voices, help="Edge-tts speaker")
+    parser.add_argument("--speed", type=int, default=0, help="Speech speed (%)")
+    parser.add_argument("--f0_key_up", type=int, default=0, help="Transpose value")
+    parser.add_argument("--f0_method", type=str, default="rmvpe", choices=["rmvpe", "crepe"], help="Pitch extraction method")
+    parser.add_argument("--index_rate", type=float, default=1, help="Index rate")
+    parser.add_argument("--protect", type=float, default=0.33, help="Protect")
+    parser.add_argument("--filter_radius", type=int, default=3, help="Filter radius")
+    parser.add_argument("--resample_sr", type=int, default=0, help="Resample sample rate")
+    parser.add_argument("--rms_mix_rate", type=float, default=0.25, help="RMS mix rate")
     args = parser.parse_args()
 
-    info, edge_output, result = tts(
+    info, edge_tts_output, tts_output = tts(
         args.model_name,
         args.speed,
         args.tts_text,
         args.tts_voice,
-        args.f0_up_key,
+        args.f0_key_up,
         args.f0_method,
         args.index_rate,
         args.protect,
         args.filter_radius,
         args.resample_sr,
-        args.rms_mix_rate
+        args.rms_mix_rate,
     )
 
     print(info)
-    if result:
-        sr, audio = result
-        sf.write("output.wav", audio, sr)
-        print(f"Result saved to output.wav")
+    if edge_tts_output:
+        print(f"Edge TTS output saved to {edge_tts_output}")
+    if tts_output:
+        tgt_sr, audio_opt = tts_output
+        output_filename = "output.wav"
+        librosa.output.write_wav(output_filename, audio_opt, tgt_sr)
+        print(f"TTS output saved to {output_filename}")
