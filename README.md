@@ -117,8 +117,7 @@ ERROR: Could not build wheels for fairseq, which is required to install pyprojec
 Maybe fairseq needs Microsoft C++ Build Tools.
 [Download installer](https://visualstudio.microsoft.com/ja/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16) and install it.
 
-
-
+"Crepe is best for CPU user :)"
 
 ---
 
